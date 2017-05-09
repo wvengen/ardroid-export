@@ -126,7 +126,7 @@ public class OscService {
 				state = OscService.ROUTES_REQUESTED;
 
 				System.out.println("OSC State: " + state);
-				sendOSCMessage("/routes/list");
+				sendOSCMessage("/strip/list");
 				//Object[] args = {1,2};
 				//sendOSCMessage("/routes/gainabs", args);
 			}
@@ -187,47 +187,47 @@ public class OscService {
 		
 		switch(cmd){
 		case TRANSPORT_PLAY:
-			uri = "/ardour/transport_play";
+			uri = "/transport_play";
 			break;
 			
 		case TRANSPORT_STOP:
-			uri = "/ardour/transport_stop";
+			uri = "/transport_stop";
 			break;
 			
 		case GOTO_START:
-			uri = "/ardour/goto_start";
+			uri = "/goto_start";
 			break;
 			
 		case GOTO_END:
-			uri = "/ardour/goto_end";
+			uri = "/goto_end";
 			break;
 			
 		case REC_ENABLE_TOGGLE:
-			uri = "/ardour/rec_enable_toggle";
+			uri = "/rec_enable_toggle";
 			break;
 			
 		case LOOP_ENABLE_TOGGLE:
-			uri = "/ardour/loop_toggle";
+			uri = "/loop_toggle";
 			break;
 			
 		case FFWD:
-			uri = "/ardour/ffwd";
+			uri = "/ffwd";
 			break;
 			
 		case REWIND:
-			uri = "/ardour/rewind";
+			uri = "/rewind";
 			break;
 
 		case GOTO_PREV_MARKER:
-			uri = "/ardour/prev_marker";
+			uri = "/prev_marker";
 			break;
 
 		case ADD_MARKER:
-			uri = "/ardour/add_marker";
+			uri = "/add_marker";
 			break;
 
 		case GOTO_NEXT_MARKER:
-			uri = "/ardour/next_marker";
+			uri = "/next_marker";
 			break;
 		}
 		
@@ -249,7 +249,7 @@ public class OscService {
 		
 		switch(cmd){
 		case LOCATE:
-			uri = "/ardour/locate";
+			uri = "/locate";
 			args[1] = Integer.valueOf(0);
 		
 			break;		
@@ -265,7 +265,7 @@ public class OscService {
 	 */
 public void trackListVolumeAction( org.ardour.Track track, int position){
 
-		String uri = "/ardour/routes/gainabs";
+		String uri = "/strip/fader";
 
 	    Object[] args = new Object[2];
 	    args[0] = Integer.valueOf(track.remoteId);
@@ -291,19 +291,19 @@ public void trackListVolumeAction( org.ardour.Track track, int position){
 		
 		switch(cmd){
 		case REC_CHANGED:
-			uri = "/ardour/routes/recenable";
+			uri = "/strip/recenable";
 			args[1] = Integer.valueOf(track.recEnabled ? 0 : 1);
 			
 			break;
 		
 		case MUTE_CHANGED:
-			uri = "/ardour/routes/mute";
+			uri = "/strip/mute";
 			args[1] = Integer.valueOf(track.muteEnabled ? 0 : 1);
 			
 			break;
 			
 		case SOLO_CHANGED:
-			uri = "/ardour/routes/solo";
+			uri = "/strip/solo";
 			args[1] = Integer.valueOf(track.soloEnabled ? 0 : 1);
 
 			break;
@@ -364,27 +364,27 @@ public void trackListVolumeAction( org.ardour.Track track, int position){
 				
 				int changeId = -1;
 				
-				if(message.getName().equals("/route/solo")){
+				if(message.getName().equals("/strip/solo")){
 					changeId = SOLO_CHANGED;
 					handleChange(message, changeId);
 				}
-				else if(message.getName().equals("/route/mute")){
+				else if(message.getName().equals("/strip/mute")){
 					changeId = MUTE_CHANGED;
 					handleChange(message, changeId);
 				}
-				else if(message.getName().equals("/route/rec")){
+				else if(message.getName().equals("/strip/recenable")){
 					changeId = REC_CHANGED;
 					handleChange(message, changeId);
 				}
-				else if(message.getName().equals("/route/name")){
+				else if(message.getName().equals("/strip/name")){
 					changeId = NAME_CHANGED;
 					handleChange(message, changeId);
 				}
-				else if(message.getName().equals("/route/gain")){
+				else if(message.getName().equals("/strip/fader")){
 					changeId = GAIN_CHANGED;
 					handleChange(message, changeId);
 				}
-				else if(message.getName().equals("/ardour/transport_frame")){
+				else if(message.getName().equals("/transport_frame")){
 					
 					Long clock = (Long) message.getArg(0);
 					
@@ -544,7 +544,7 @@ public void trackListVolumeAction( org.ardour.Track track, int position){
 	 */
 	public void getClock(){
 		if (state == READY){
-			this.sendOSCMessage("/ardour/transport_frame");
+			this.sendOSCMessage("/transport_frame");
 		}
 	}
 
